@@ -13,6 +13,10 @@ configure a docker container of MongoDB using an official docker image of MongoD
 ## Run install
 `cd db && sh start_container.sh`
 
+## Notice
+* Should there is already mongodb admin database in the binded system volume, the root user will not be triggered and init-mongo.js will not be called.
+* you can rename the init-mongo.js to anything you like as long as it is still a javascript file.
+
 ## Additional reference:
 * docker-compose volume docs: https://docs.docker.com/compose/compose-file/#volumes
 * create a docker-compose.yml file for mongodb https://stackoverflow.com/questions/34559557/how-to-enable-authentication-on-mongodb-through-docker/42973849#42973849
