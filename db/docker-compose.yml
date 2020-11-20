@@ -1,0 +1,46 @@
+# Author: Yingding Wang
+# Docker Compose file version 3.8
+version: "3.8"
+services:
+  mongodb-3.6x:
+    image: "mongo:3.6.21"
+    container_name: 'db-mongodb-3.6x'
+    ports:
+      - "27017:27017"
+    environment:
+      # provide your credentials here
+      - MONGO_INITDB_ROOT_USERNAME=root # database
+      - MONGO_INITDB_ROOT_PASSWORD=rootPassXXX
+    volumes: # https://docs.docker.com/compose/compose-file/#volumes
+      - type: volume
+        source: /Users/yingding/dockerShared/mongo3.6x/data/configdb
+        target: /data/configdb
+        read_only: false
+        volume:
+          - nocopy: true
+      - type: volume
+        source: /Users/yingding/dockerShared/mongo3.6x/data/db
+        target: /data/db
+        read_only: false
+        volume:
+          - nocopy: true
+      # - "/Users/yingding/dockerShared/mongo3.6x/data/configdb:/data/configdb"
+      # - "/Users/yingding/dockerShared/mongo3.6x/data/db:/data/db"
+    networks:
+      - bridge
+
+#volumes:
+#  myconfigdb:
+#    name: mongodb-3.6x-configdb
+#    external: true
+#  mydb:
+#    name: mongodb-3.6x-db
+#    external: true
+
+# networks:
+#  bridge: # project-bridge
+
+#    driver: bridge
+#    name: bridge
+
+
