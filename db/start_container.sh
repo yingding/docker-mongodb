@@ -5,5 +5,5 @@ IMAGE=mongo:3.6.21
 docker pull $IMAGE;
 
 # create container and start container
-docker-compse -f ./docker-compose.yml up -d
+docker-compose -f ./docker-compose.yml up -d
 

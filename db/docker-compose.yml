@@ -8,27 +8,34 @@ services:
     ports:
       - "27017:27017"
     environment:
-      # provide your credentials here
-      - MONGO_INITDB_ROOT_USERNAME=root # database
-      - MONGO_INITDB_ROOT_PASSWORD=rootPassXXX
+      # provide your credentials here, ${MY_INTDB_ROOT_USERNAME} is a env variable can be sett in .env file
+      # this env setting will add a root user in the admin db with role {role: root, db: admin}
+      - MONGO_INITDB_DATABASE=${MY_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MY_INITDB_ROOT_USERNAME} # database root user name
+      - MONGO_INITDB_ROOT_PASSWORD=${MY_INITDB_ROOT_PASSWORD} # database root password
     volumes: # https://docs.docker.com/compose/compose-file/#volumes
-      - type: volume
-        source: /Users/yingding/dockerShared/mongo3.6x/data/configdb
-        target: /data/configdb
+      - type: bind
+        source: "${MY_VOLUMES_PWD}/data/configdb"
+        target: "/data/configdb"
         read_only: false
         volume:
-          - nocopy: true
-      - type: volume
-        source: /Users/yingding/dockerShared/mongo3.6x/data/db
-        target: /data/db
+          nocopy: true
+      - type: bind
+        source: "${MY_VOLUMES_PWD}/data/db"
+        target: "/data/db"
         read_only: false
         volume:
-          - nocopy: true
-      # - "/Users/yingding/dockerShared/mongo3.6x/data/configdb:/data/configdb"
-      # - "/Users/yingding/dockerShared/mongo3.6x/data/db:/data/db"
+          nocopy: true
+      - type: bind
+        source: "./init-mongo.js"
+        target: "/docker-entrypoint-initdb.d/init-mongo.js" # this will be called during the first init
+        read_only: true
+        volume:
+          nocopy: true
     networks:
-      - bridge
+      - mongodb-net # which is already created
 
+# declarations
 #volumes:
 #  myconfigdb:
 #    name: mongodb-3.6x-configdb
@@ -37,10 +44,9 @@ services:
 #    name: mongodb-3.6x-db
 #    external: true
 
-# networks:
-#  bridge: # project-bridge
-
-#    driver: bridge
-#    name: bridge
+networks:
+  mongodb-net: # project-bridge
+    name: mongodb-net
+    driver: bridge
 
 

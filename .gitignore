@@ -2,4 +2,7 @@
 
 .DS_Store
 
+init-mongo.js
+.env
+
 
